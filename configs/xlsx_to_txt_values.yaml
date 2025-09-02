@@ -1,0 +1,26 @@
+# Configuración para convertir XLSX a TXT con valores puros
+name: "XLSX to TXT Values Conversion"
+description: "Convierte primera pestaña a valores, elimina fórmulas, redondea última columna a 3 decimales, exporta TXT con comas decimales"
+
+# Configuración de carga específica
+load_options:
+  sheet_name: 0  # Solo primera hoja
+  # Cargar solo valores, no fórmulas
+  data_only: true
+
+transformations:
+  # Redondear la última columna a 3 decimales
+  - type: "round_last_column"
+    decimals: 3
+
+  # Reemplazar puntos por comas en la última columna (formato europeo)
+  - type: "replace_decimal_separator"
+    columns: "last"  # Aplicar solo a la última columna
+    from_separator: "."
+    to_separator: ","
+
+export:
+  format: "txt"
+  delimiter: "\t"  # Separación por tabulaciones
+  headers: true
+  filename: "valores_exportados.txt"

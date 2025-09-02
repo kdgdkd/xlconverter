@@ -1,0 +1,35 @@
+# Configuración para limpiar reportes HTML exportados del sistema
+name: "Clean HTML Export"
+description: "Limpia archivos HTML exportados con extensión XLS"
+
+transformations:
+  # Eliminar filas de encabezado del sistema
+  - type: "delete_rows"
+    conditions:
+      - contains: ["Generado el", "Usuario:", "Informe:", "====="]
+      - range: [0, 1]  # Primeras 2 filas
+
+  # Eliminar columnas vacías comunes en exportaciones HTML
+  - type: "delete_columns"
+    columns: [0, "Unnamed", " "]
+
+  # Limpiar nombres de columnas
+  - type: "rename_columns"
+    mapping:
+      " Descripción ": "Descripcion"
+      " Importe ": "Importe"
+      " Código ": "Codigo"
+
+  # Redondear todos los números a 2 decimales
+  - type: "round_numbers"
+    columns: ["Importe", "Debe", "Haber", "Saldo"]
+    decimals: 2
+
+  # Eliminar filas totalizadoras
+  - type: "delete_rows"
+    conditions:
+      - contains: ["SUMA", "TOTAL", "Subtotal"]
+
+export:
+  format: "xlsx"
+  filename: "reporte_limpio_{date}.xlsx"

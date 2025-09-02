@@ -1,0 +1,25 @@
+# Configuración de test para procesar test.xlsx
+name: "Test Configuration"
+description: "Procesa test.xlsx: solo primera hoja, elimina 5 filas, formato contabilidad columnas B-H"
+
+# Configuración de carga específica
+load_options:
+  sheet_name: 0  # Solo primera hoja (índice 0)
+
+transformations:
+  # Eliminar las primeras 5 filas (filas 0-4)
+  - type: "delete_rows"
+    conditions:
+      - range: [0, 4]
+
+  # Formatear columnas B a H (índices 1-7) como contabilidad con 2 decimales
+  - type: "format_accounting"
+    columns: ["B", "C", "D", "E", "F", "G", "H"]  # Por letra de columna
+    decimals: 2
+    currency_symbol: "€"
+
+export:
+  format: "xlsx"
+  filename: "test_processed.xlsx"
+  # Aplicar formato contabilidad en la exportación
+  apply_excel_formatting: true
