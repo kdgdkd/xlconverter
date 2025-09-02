@@ -23,4 +23,3 @@ export:
   format: "txt"
   delimiter: "\t"  # Separación por tabulaciones
   headers: true
-  filename: "valores_exportados.txt"
